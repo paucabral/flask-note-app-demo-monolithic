@@ -14,7 +14,7 @@ A demo of a full stack Flask App using an ORM.
 1. Create a virtual environment.
     ```bash
     $ python -m venv venv
-    ```bash
+    ```
 2. Activate the virtual environment.
     ```bash
     $ source /venv/bin/activate
