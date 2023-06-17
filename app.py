@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
@@ -18,6 +18,10 @@ class NoteSchema(ma.Schema):
 
 note_schema = NoteSchema()
 notes_schema = NoteSchema(many=True)
+
+@app.route('/')
+def get_all_notes():
+    return render_template('index.html')
 
 if __name__ == "__main__":
     with app.app_context():
