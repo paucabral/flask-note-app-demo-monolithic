@@ -2,6 +2,40 @@
 
 {% block content %}
 <main id="content">
+    <div class="note-submission">
+        <form class="card note-form text-bg-warning mb-3" action="{{ url_for('create_note') }}" method="POST">
+            <div class="card-header mb-3">
+                <input class="form-control" type="text" name="title" placeholder="Title" required>
+            </div>
+            <div class="card-text mb-3">
+                <textarea class="form-control" name="content" placeholder="Content" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-outline-dark">Submit</button>
+        </form>
+    </div>
 
+    <div class="notes-area">
+        <table class="table table-hover">
+            <caption>Notes</caption>
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for note in notes %}
+                <tr>
+                    <td>{{ note.id }}</td>
+                    <td>{{ note.title }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ url_for('get_note', note_id=note.id) }}"><i class="bi bi-book-fill"></i> View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </main>
 {% endblock %}

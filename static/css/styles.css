@@ -1,0 +1,41 @@
+body {
+    height: 100vh;
+}
+
+.unset {
+    all: unset;
+}
+
+.note-submission {
+    display: flex;
+    justify-content: center;
+}
+
+.note-form {
+    flex: 1 0 auto;
+    margin: 10px;
+    max-width: 450px;
+    border-width: 2px;
+}
+
+.note-form input, .note-form textarea {
+    border-width: 2px;
+    border-color: black;
+}
+
+.note-form .card-text {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.note-form .card-text textarea {
+    height: 10em;
+}
+
+.note-form button {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    border-width: 2px;
+}

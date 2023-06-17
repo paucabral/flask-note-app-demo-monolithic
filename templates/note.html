@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Note | {{ note.title }}
+{% endblock %}
+
+{% block content %}
+<div class="note-submission">
+    <form class="card note-form text-bg-warning mb-3" action="{{ url_for('update_note', note_id=note.id) }}" method="POST">
+        <div class="card-header mb-3">
+            <input class="form-control" type="text" name="title" placeholder="Title" value="{{ note.title }}" required>
+        </div>
+        <div class="card-text mb-3">
+            <textarea class="form-control" name="content" placeholder="Content" required>{{ note.content }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-dark">Submit</button>
+    </form>
+</div>
+{% endblock %}
