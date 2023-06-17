@@ -39,3 +39,26 @@ body {
     font-weight: bold;
     border-width: 2px;
 }
+
+.notes-area {
+    margin: 10px;
+    overflow-y: auto;
+}
+
+thead {
+    background-color: black;
+    color: white;
+}
+
+th, td {
+    text-align: center;
+}
+
+tbody {
+    overflow-y: auto;
+}
+
+.action-items a {
+    display: inline-block;
+    margin: 3px;
+}

@@ -27,9 +27,9 @@
             <tbody>
                 {% for note in notes %}
                 <tr>
-                    <td>{{ note.id }}</td>
-                    <td>{{ note.title }}</td>
-                    <td>
+                    <td class="col-1">{{ note.id }}</td>
+                    <td class="col-8">{{ note.title }}</td>
+                    <td class="action-items col-3">
                         <a class="btn btn-primary" href="{{ url_for('get_note', note_id=note.id) }}"><i class="bi bi-book-fill"></i> View</a>
                         <a class="btn btn-danger" href="{{ url_for('delete_note', note_id=note.id) }}" onclick="return confirm('Do you really want to delete this note?')"><i class="bi bi-trash-fill"></i> Delete</a>
                     </td>
