@@ -12,5 +12,14 @@ class Note(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
 
+class NoteSchema(ma.Schema):
+    class Meta:
+        fields = ("title", "content")
+
+note_schema = NoteSchema()
+notes_schema = NoteSchema(many=True)
+
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
