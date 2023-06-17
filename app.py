@@ -50,6 +50,13 @@ def update_note(note_id):
     db.session.commit()
     return redirect('/')
 
+@app.route('/notes/<int:note_id>/delete')
+def delete_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    db.session.delete(note)
+    db.session.commit()
+    return redirect('/')
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
