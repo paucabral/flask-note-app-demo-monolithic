@@ -1,0 +1,23 @@
+{% extends "auth_template.html" %}
+
+{% block title %}
+Login | Note Taking App
+{% endblock %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('login') }}">
+    <h1>Note Taking App</h1>
+    <h5 class="h3 mb-3 fw-normal">Sign In</h5>
+    <div class="form-floating">
+        <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="Username" required>
+        <label for="floatingUsername">Username</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" minlength="8" required>
+        <label for="floatingPassword">Password</label>
+    </div>
+    <button id="signInBtn" class="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
+    <hr>
+    No account yet? <a href="{{ url_for('register') }}">Sign Up</a>
+</form>
+{% endblock %}

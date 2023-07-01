@@ -1,0 +1,28 @@
+{% extends "auth_template.html" %}
+
+{% block title %}
+Register | Note Taking App
+{% endblock %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('register') }}">
+    <h1>Note Taking App</h1>
+    <h5 class="h3 mb-3 fw-normal">Sign Up</h5>
+    <div class="form-floating">
+        <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="Username" required>
+        <label for="floatingUsername">Username</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" minlength="8" onchange="check_pass()" required>
+        <label for="floatingPassword">Password</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" name="password2" class="form-control" id="floatingPassword2" placeholder="Confirm Password" minlength="8" onchange="check_pass()" required>
+        <label for="floatingPassword">Confirm Password</label>
+    </div>
+    <button id="signupBtn" class="w-100 btn btn-lg btn-primary" type="submit">Sign Up</button>
+    <hr>
+    Already have an account? <a href="{{ url_for('login') }}">Sign In</a>
+</form>
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+{% endblock %}

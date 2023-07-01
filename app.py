@@ -19,17 +19,67 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.Text, nullable=False)
+    notes = db.relationship('Note', backref='user', lazy=True)
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class NoteSchema(ma.Schema):
     class Meta:
-        fields = ("title", "content")
+        fields = ("id", "title", "content")
 
 note_schema = NoteSchema()
 notes_schema = NoteSchema(many=True)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# Register
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username and password:
+            existing_user = User.query.filter_by(username=username).first()
+            if not existing_user:
+                user = User(username=username)
+                user.set_password(password=password)
+                db.session.add(user)
+                db.session.commit()
+            else:
+                return "User already exists."
+        else:
+            return "Please fill out all the fields."
+        return redirect(url_for('login'))
+    return render_template('register.html')
+
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user)
+            return redirect(url_for('get_all_notes'))
+        else:
+            return 'Invalid username or password'
+    return render_template('login.html')
 
 @app.route('/notes', methods=['POST'])
 def create_note():
