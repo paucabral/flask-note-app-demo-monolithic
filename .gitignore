@@ -6,3 +6,9 @@ venv/*
 
 # Test Database
 *.db
+
+# Environment Variables
+.env
+
+# Migrations
+migrations/*
