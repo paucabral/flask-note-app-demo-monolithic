@@ -81,43 +81,61 @@ def login():
             return 'Invalid username or password'
     return render_template('login.html')
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
 @app.route('/notes', methods=['POST'])
+@login_required
 def create_note():
     data = {
         "title": request.form["title"],
-        "content": request.form["content"]
+        "content": request.form["content"],
+        "user_id": current_user.id
     }
 
-    note = Note(title=data["title"], content=data["content"])
+    note = Note(title=data["title"], content=data["content"], user_id=data["user_id"])
     db.session.add(note)
     db.session.commit()
-    return redirect('/')
+    return redirect(url_for('get_all_notes'))
 
-@app.route('/')
+@app.route('/notes', methods=['GET'])
+@login_required
 def get_all_notes():
-    notes = Note.query.all()
+    notes = Note.query.filter_by(user_id=current_user.id).all()
     return render_template('index.html', notes=notes)
 
 @app.route('/notes/<int:note_id>')
+@login_required
 def get_note(note_id):
     note = Note.query.get_or_404(note_id)
+    if note.user_id != current_user.id:
+        return 'Unauthorized', 401
     return render_template("note.html", note=note)
 
 @app.route('/notes/<int:note_id>', methods=['POST'])
+@login_required
 def update_note(note_id):
     note = Note.query.get_or_404(note_id)
+    if note.user_id != current_user.id:
+        return 'Unauthorized', 401
     data = request.form
     note.title = data['title']
     note.content = data['content']
     db.session.commit()
-    return redirect('/')
+    return redirect(url_for('get_all_notes'))
 
 @app.route('/notes/<int:note_id>/delete')
+@login_required
 def delete_note(note_id):
     note = Note.query.get_or_404(note_id)
+    if note.user_id != current_user.id:
+        return 'Unauthorized', 401
     db.session.delete(note)
     db.session.commit()
-    return redirect('/')
+    return redirect(url_for('get_all_notes'))
 
 if __name__ == "__main__":
     with app.app_context():

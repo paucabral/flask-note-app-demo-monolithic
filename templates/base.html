@@ -15,9 +15,12 @@
             {% block header %}
             <nav class="navbar bg-dark" data-bs-theme="dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="/">
+                    <a class="navbar-brand" href="{{ url_for('get_all_notes') }}">
                         <img src="{{ url_for('static', filename='img/note.png')}}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                        Note Taking App
+                        Note Taking App | {{ current_user.username }}
+                    </a>
+                    <a class="navbar-brand" href="{{ url_for('logout') }}" style="float: right;">
+                        <i class="bi bi-box-arrow-right"></i>
                     </a>
                 </div>
             </nav>
