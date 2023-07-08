@@ -11,8 +11,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
+# Load configuration according to environment
+if os.environ.get("FLASK_ENV") == 'production':
+    app.config['SECRET_KEY'] = os.environ.get('PROD_SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('PROD_SQLALCHEMY_DATABASE_URI')
+elif os.environ.get("FLASK_ENV") == 'staging':
+    app.config['SECRET_KEY'] = os.environ.get('STG_SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('STG_SQLALCHEMY_DATABASE_URI')
+elif os.environ.get("FLASK_ENV") == 'test':
+    app.config['SECRET_KEY'] = os.environ.get('TEST_SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('TEST_SQLALCHEMY_DATABASE_URI')
+else:
+    app.config['SECRET_KEY'] = os.environ.get('DEV_SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DEV_SQLALCHEMY_DATABASE_URI')
+    
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 migrate = Migrate(app, db)
