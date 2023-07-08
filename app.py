@@ -23,6 +23,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
     notes = db.relationship('Note', backref='user', lazy=True)
 
     def set_password(self, password):
@@ -140,4 +141,4 @@ def delete_note(note_id):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=bool(os.getenv("DEBUG")), port=int(os.getenv("PORT")), host="0.0.0.0")
