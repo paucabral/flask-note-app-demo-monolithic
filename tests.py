@@ -77,7 +77,29 @@ class NoteAppTestCase(unittest.TestCase):
         response = self.client.get(f'/notes/{note.id}', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Test Note', response.data)
+    
+    def test_update_note(self):
+        # Login the user
+        response = self.client.post('/', data={
+            'username': os.getenv("TEST_USER"),
+            'password': os.getenv("TEST_PASSWORD")
+        }, follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
 
+        # Create Note
+        note = Note(title='Test Note', content='This is a test note', user_id=self.user_id)
+        db.session.add(note)
+        db.session.commit()
+
+        # Update a note
+        response = self.client.post(f'/notes/{note.id}', data={
+            'title': "Updated Note",
+            'content': "Updated content"
+        }, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        updated_note = Note.query.get(note.id)
+        self.assertEqual(updated_note.title, "Updated Note")
+        self.assertEqual(updated_note.content, "Updated content")
         
 if __name__ == '__main__':
     unittest.main()
