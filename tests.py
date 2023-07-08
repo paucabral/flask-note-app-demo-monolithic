@@ -100,6 +100,23 @@ class NoteAppTestCase(unittest.TestCase):
         updated_note = Note.query.get(note.id)
         self.assertEqual(updated_note.title, "Updated Note")
         self.assertEqual(updated_note.content, "Updated content")
+
+    def test_delete_note(self):
+        # Login the user
+        response = self.client.post('/', data={
+            'username': os.getenv("TEST_USER"),
+            'password': os.getenv("TEST_PASSWORD")
+        }, follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+
+        # Create Note
+        note = Note(title='Test Note', content='This is a test note', user_id=self.user_id)
+        db.session.add(note)
+        db.session.commit()
+
+        response = self.client.get(f'/notes/{note.id}/delete', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(Note.query.all()), 0)
         
 if __name__ == '__main__':
     unittest.main()
