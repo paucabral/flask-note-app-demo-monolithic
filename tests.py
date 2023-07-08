@@ -41,6 +41,43 @@ class NoteAppTestCase(unittest.TestCase):
         self.assertEqual(note.title, 'Test Note')
         self.assertEqual(note.content, 'This is a test note')
         self.assertEqual(note.user_id, self.user_id)
+    
+    def test_get_all_notes(self):
+        # Login the user
+        response = self.client.post('/', data={
+            'username': os.getenv("TEST_USER"),
+            'password': os.getenv("TEST_PASSWORD")
+        }, follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+
+        # Create Note
+        note = Note(title='Test Note', content='This is a test note', user_id=self.user_id)
+        db.session.add(note)
+        db.session.commit()
+
+        # Get all notes
+        response = self.client.get('/notes', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Test Note', response.data)
+
+    def test_get_note(self):
+        # Login the user
+        response = self.client.post('/', data={
+            'username': os.getenv("TEST_USER"),
+            'password': os.getenv("TEST_PASSWORD")
+        }, follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+
+        # Create Note
+        note = Note(title='Test Note', content='This is a test note', user_id=self.user_id)
+        db.session.add(note)
+        db.session.commit()
+
+        # Get create note
+        response = self.client.get(f'/notes/{note.id}', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Test Note', response.data)
+
         
 if __name__ == '__main__':
     unittest.main()
