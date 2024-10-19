@@ -1,9 +1,17 @@
 import unittest
-from app import app, db, Note, User
-import os
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 load_dotenv()
+
+import os
+import sys
+
+# Append the project path to the system path
+current_dir = os.path.dirname(__file__)
+sys.path.append(os.path.join(current_dir, ".."))
+
+from views import app
+from models import db, User, Note
 
 class NoteAppTestCase(unittest.TestCase):
     def setUp(self):
@@ -97,7 +105,7 @@ class NoteAppTestCase(unittest.TestCase):
             'content': "Updated content"
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        updated_note = Note.query.get(note.id)
+        updated_note = db.session.get(Note, note.id)
         self.assertEqual(updated_note.title, "Updated Note")
         self.assertEqual(updated_note.content, "Updated content")
 
