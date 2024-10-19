@@ -3,12 +3,13 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from models import db, User, Note
-from schemas import note_schema, note_schema
+from schemas import ma
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
 
 db.init_app(app)
+ma.init_app(app)
 migrate = Migrate(app, db)
 
 login_manager = LoginManager(app)
