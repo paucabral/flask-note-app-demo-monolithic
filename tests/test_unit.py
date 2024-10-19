@@ -6,6 +6,7 @@ load_dotenv()
 import os
 import sys
 
+# Append the project path to the system path
 current_dir = os.path.dirname(__file__)
 sys.path.append(os.path.join(current_dir, ".."))
 

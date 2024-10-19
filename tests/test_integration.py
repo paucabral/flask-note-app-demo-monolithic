@@ -132,3 +132,6 @@ class TestIntegration:
         # Verify that the note was deleted
         deleted_note = db.session.get(Note, note.id)
         assert deleted_note is None
+
+if __name__ == '__main__':
+    pytest.main()
