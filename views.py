@@ -16,7 +16,7 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 # Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -83,7 +83,7 @@ def get_all_notes():
 @app.route('/notes/<int:note_id>')
 @login_required
 def get_note(note_id):
-    note = Note.query.get_or_404(note_id)
+    note = db.session.get(Note, note_id)
     if note.user_id != current_user.id:
         return 'Unauthorized', 401
     return render_template("note.html", note=note)
@@ -91,7 +91,7 @@ def get_note(note_id):
 @app.route('/notes/<int:note_id>', methods=['POST'])
 @login_required
 def update_note(note_id):
-    note = Note.query.get_or_404(note_id)
+    note = db.session.get(Note, note_id)
     if note.user_id != current_user.id:
         return 'Unauthorized', 401
     data = request.form
@@ -103,7 +103,7 @@ def update_note(note_id):
 @app.route('/notes/<int:note_id>/delete')
 @login_required
 def delete_note(note_id):
-    note = Note.query.get_or_404(note_id)
+    note = db.session.get(Note, note_id)
     if note.user_id != current_user.id:
         return 'Unauthorized', 401
     db.session.delete(note)

@@ -8,7 +8,6 @@ import sys
 
 current_dir = os.path.dirname(__file__)
 sys.path.append(os.path.join(current_dir, ".."))
-FLASK_ENV = "test" # Activate test environment
 
 from views import app
 from models import db, User, Note
@@ -105,7 +104,7 @@ class NoteAppTestCase(unittest.TestCase):
             'content': "Updated content"
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        updated_note = Note.query.get(note.id)
+        updated_note = db.session.get(Note, note.id)
         self.assertEqual(updated_note.title, "Updated Note")
         self.assertEqual(updated_note.content, "Updated content")
 
