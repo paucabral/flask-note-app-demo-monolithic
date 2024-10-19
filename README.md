@@ -17,7 +17,7 @@ A demo of a Flask App using an ORM.
     ```
 2. Activate the virtual environment.
     ```bash
-    $ source /venv/bin/activate
+    $ source venv/bin/activate
     ```
 3. Install the dependencies.
     ```bash
